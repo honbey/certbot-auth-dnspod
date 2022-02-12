@@ -54,7 +54,7 @@ if [ "$1" = "clean" ]; then
       APIRET=$(curl -s -X POST "https://dnsapi.cn/Record.Remove" \
           -H "User-Agent: $USER_AGENT" \
           -d "$PARAMS&domain=$DOMAIN&record_id=$RECORD_ID" \
-      | python -c "import sys,json;ret=json.load(sys.stdin);print(ret.get('status',{}).get('message','error'))")
+      | python3 -c "import sys,json;ret=json.load(sys.stdin);print(ret.get('status',{}).get('message','error'))")
       echo "Remove Record: $RECORD_ID - $APIRET"
     fi
     rm -f $RECORD_FILE
@@ -62,7 +62,7 @@ else
     RECORD_ID=$(curl -s -X POST "https://dnsapi.cn/Record.Create" \
         -H "User-Agent: $USER_AGENT" \
         -d "$PARAMS&domain=$DOMAIN&sub_domain=$TXHOST&record_type=TXT&value=$CERTBOT_VALIDATION&record_line=默认" \
-    | python -c "import sys,json;ret=json.load(sys.stdin);print(ret.get('record',{}).get('id',ret.get('status',{}).get('message','error')))")
+    | python3 -c "import sys,json;ret=json.load(sys.stdin);print(ret.get('record',{}).get('id',ret.get('status',{}).get('message','error')))")
 
     # Save info for cleanup
     if [ ! -d $RECORD_PATH ]; then
